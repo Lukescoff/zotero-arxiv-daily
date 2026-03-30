@@ -62,7 +62,13 @@ class Paper:
             self.tldr = tldr
             return tldr
         except Exception as e:
-            logger.warning(f"Failed to generate tldr of {self.url}: {e}")
+            logger.warning(f"Failed to generate tldr of {self            prompt = (
+                "Given the beginning of a paper, extract the affiliations of the authors.\n"
+                "Output format MUST be exactly two lines:\n"
+                "Line 1: a python list of affiliations (strings) sorted by author order. If none found, output []\n"
+                "Line 2: the first author's university/institution as a single string. If unknown, output null\n\n"
+                f"{self.full_text}"
+            ).url}: {e}")
             tldr = self.abstract
             self.tldr = tldr
             return tldr
@@ -70,6 +76,13 @@ class Paper:
     def _generate_affiliations_with_llm(self, openai_client:OpenAI,llm_params:dict) -> Optional[list[str]]:
         if self.full_text is not None:
             prompt = f"Given the beginning of a paper, extract the affiliations of the authors in a python list format, which is sorted by the author order. If there is no affiliation found, return an empty list '[]':\n\n{self.full_text}"
+            prompt = (
+                "Given the beginning of a paper, extract the affiliations of the authors.\n"
+                "Output format MUST be exactly two lines:\n"
+                "Line 1: a python list of affiliations (strings) sorted by author order. If none found, output []\n"
+                "Line 2: the first author's university/institution as a single string. If unknown, output null\n\n"
+                f"{self.full_text}"
+            )
             # use gpt-4o tokenizer for estimation
             enc = tiktoken.encoding_for_model("gpt-4o")
             prompt_tokens = enc.encode(prompt)
