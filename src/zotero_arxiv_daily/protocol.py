@@ -62,13 +62,7 @@ class Paper:
             self.tldr = tldr
             return tldr
         except Exception as e:
-            logger.warning(f"Failed to generate tldr of {self            prompt = (
-                "Given the beginning of a paper, extract the affiliations of the authors.\n"
-                "Output format MUST be exactly two lines:\n"
-                "Line 1: a python list of affiliations (strings) sorted by author order. If none found, output []\n"
-                "Line 2: the first author's university/institution as a single string. If unknown, output null\n\n"
-                f"{self.full_text}"
-            ).url}: {e}")
+            logger.warning(f"Failed to generate tldr of {self.url}: {e}")
             tldr = self.abstract
             self.tldr = tldr
             return tldr
